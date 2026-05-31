@@ -1,7 +1,7 @@
-title: Kenni DigiTech
-description: Victorian Curriculum lesson plans
+title: Kenni Teaching
+description: Teaching articles and resources
 baseurl: ""   # set to "/your-repo-name" if not using a custom domain
-url: ""
+url: "https://teaching.kennibawden.com"
 permalink: pretty
 
 collections:
