@@ -224,7 +224,7 @@ footer .page {
 
 /* Arrow list variant */
 .prose-arrows ul { list-style: none; padding: 0; }
-.prose-arrows ul li { display: flex; gap: 8px; margin-bottom: 5px; }
+.prose-arrows ul li { margin-bottom: 5px; }
 .prose-arrows ul li::before { content: '→'; color: var(--accent-2); font-weight: 700; flex-shrink: 0; }
 
 /* ── Flow table ─────────────────────────────────── */

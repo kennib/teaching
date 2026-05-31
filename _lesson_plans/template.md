@@ -12,7 +12,7 @@ curriculumLinks:
   - level: 
     strand: 
     subStrand: 
-    keyElements: 
+    elaborations: 
 stages:
   - stage: Introduction
     time: 

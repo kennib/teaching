@@ -45,16 +45,12 @@ layout: default
               <span>{{ p.topicAndFocus }}</span>
             </div>
           {% endif %}
-          {% if p.victorianCurriculumCapability %}
+          {% if p.summary %}
             <div class="kv">
-              <span class="kv-l">Curriculum Cap.</span>
-              <span>{{ p.victorianCurriculumCapability }}</span>
+              <span class="kv-l">Summary</span>
+              <span>{{ p.summary | markdownify }}</span>
             </div>
           {% endif %}
-          <div style="margin-top:14px">
-            {% capture li_section %}{% include section.html body=content heading="Learning Intentions" %}{% endcapture %}
-            <div class="prose">{{ li_section }}</div>
-          </div>
         </div>
       </div>
 
@@ -85,32 +81,50 @@ layout: default
 
     </div><!-- /row 1 -->
 
-    <!-- Row 2: Success Criteria + Curriculum Links -->
+    <!-- Row 2: Learning Intentions + Success Criteria -->
     <div class="grid col-2">
 
       <div class="card">
-        <div class="card-head"><div class="ci ci-purple">🎯</div><h2>Success Criteria</h2></div>
+        <div class="card-head"><div class="ci ci-purple">🧠</div><h2>Learning Intentions</h2></div>
         <div class="card-body">
-          {% capture sc_section %}{% include section.html body=content heading="Success Criteria" %}{% endcapture %}
-          <div class="prose prose-check">{{ sc_section }}</div>
+          <div class="prose prose-check">{{ p.learningIntentions | markdownify }}</div>
         </div>
       </div>
+      <div class="card">
+        <div class="card-head"><div class="ci ci-purple">🎯</div><h2>Success Criteria</h2></div>
+        <div class="card-body">
+          <div class="prose prose-check">{{ p.successCriteria | markdownify }}</div>
+        </div>
+      </div>
+    </div><!-- /row 2 -->
 
+    <!-- Row 3: Curriculum Links -->
+    <div class="grid">
       <div class="card">
         <div class="card-head"><div class="ci ci-blue">📜</div><h2>Victorian Curriculum Links</h2></div>
         <div class="card-body">
           {% if p.curriculumLinks %}
             <table class="curr-table">
               <thead>
-                <tr><th>Level</th><th>Strand</th><th>Sub-strand</th><th>Key Elements</th></tr>
+                <tr><th>Level</th><th>Area</th><th>Strand</th><th>Sub-strand</th><th>Key Elements</th></tr>
               </thead>
               <tbody>
                 {% for link in p.curriculumLinks %}
                   <tr>
                     <td>{{ link.level }}</td>
+                    <td>{{ link.area }}</td>
                     <td>{{ link.strand }}</td>
-                    <td>{{ link.subStrand }}</td>
-                    <td>{{ link.keyElements }}</td>
+                    <td>
+                      <p>{{ link.contentDescription }}</p>
+                      <a href="https://f10.vcaa.vic.edu.au/learning-areas/technologies/digital-technologies/curriculum?cd={{ link.contentDescriptionCode }}">{{ link.contentDescriptionCode }}</a>
+                    </td>
+                    <td>
+                      <ul>
+                        {% for elaboration in link.elaborations %}
+                          <li>{{ elaboration }}</li>
+                        {% endfor %}
+                      </ul>
+                    </td>
                   </tr>
                 {% endfor %}
               </tbody>
@@ -120,8 +134,7 @@ layout: default
           {% endif %}
         </div>
       </div>
-
-    </div><!-- /row 2 -->
+    </div><!-- /row 3 -->
 
     <!-- Lesson Flow (full width) -->
     <div class="card">
@@ -151,9 +164,9 @@ layout: default
                       {{ stage.stage }}
                     </span>
                   </td>
-                  <td>{{ stage.studentAction }}</td>
+                  <td>{{ stage.studentAction | markdownify }}</td>
                   <td><span class="time-chip">{{ stage.time }}</span></td>
-                  <td>{{ stage.teacherAction }}</td>
+                  <td>{{ stage.teacherAction | markdownify }}</td>
                 </tr>
               {% endfor %}
             </tbody>
@@ -164,85 +177,29 @@ layout: default
       </div>
     </div>
 
-    <!-- Row 3: Assessment + ICT + Resources -->
-    <div class="grid col-3">
-
+    <!-- Row 4: Tech + Resources -->
+    <div class="grid col-2">
       <div class="card">
-        <div class="card-head"><div class="ci ci-rose">📝</div><h2>Assessment Strategies</h2></div>
+        <div class="card-head"><div class="ci ci-teal">💻</div><h2>Tech Considerations</h2></div>
         <div class="card-body">
-          {% capture as_section %}{% include section.html body=content heading="Assessment Strategies" %}{% endcapture %}
-          <div class="prose">{{ as_section }}</div>
+          <div class="prose">{{ p.tech | markdownify }}</div>
         </div>
       </div>
 
       <div class="card">
-        <div class="card-head"><div class="ci ci-teal">💻</div><h2>ICT Considerations</h2></div>
+        <div class="card-head"><div class="ci ci-purple">🛒</div><h2 id="resources">Resources &amp; Materials</h2></div>
         <div class="card-body">
-          {% capture ict_section %}{% include section.html body=content heading="ICT Considerations" %}{% endcapture %}
-          <div class="prose">{{ ict_section }}</div>
+          <div class="prose prose-arrows">{{ p.resources | markdownify }}</div>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-head"><div class="ci ci-purple">🛒</div><h2>Resources &amp; Materials</h2></div>
-        <div class="card-body">
-          {% capture res_section %}{% include section.html body=content heading="Resources and Materials" %}{% endcapture %}
-          <div class="prose prose-arrows">{{ res_section }}</div>
-        </div>
-      </div>
-
-    </div><!-- /row 3 -->
-
-    <!-- Differentiation (full width) -->
-    <div class="card">
-      <div class="card-head"><div class="ci ci-green">🌿</div><h2>Differentiation</h2></div>
-      <div class="card-body">
-        {% capture diff_section %}{% include section.html body=content heading="Differentiation" %}{% endcapture %}
-        <div class="prose">{{ diff_section }}</div>
-      </div>
-    </div>
+    </div><!-- /row 4 -->
 
     <!-- Reflection (full width) -->
     <div class="card">
-      <div class="card-head"><div class="ci ci-blue">🔍</div><h2>Post-lesson Reflection</h2></div>
-      <div class="card-body">
-        <div class="refl-grid">
-          {% capture r1 %}{% include subsection.html body=content h2="Reflection" h3="What the students understood" %}{% endcapture %}
-          {% capture r2 %}{% include subsection.html body=content h2="Reflection" h3="What I need to revisit with the students" %}{% endcapture %}
-          {% capture r3 %}{% include subsection.html body=content h2="Reflection" h3="What I would change when I next teach this lesson" %}{% endcapture %}
-
-          <div class="refl-item">
-            <h4>What students understood</h4>
-            <div class="prose">{{ r1 }}</div>
-          </div>
-          <div class="refl-item">
-            <h4>What I need to revisit</h4>
-            <div class="prose">{{ r2 }}</div>
-          </div>
-          <div class="refl-item">
-            <h4>What I would change next time</h4>
-            <div class="prose">{{ r3 }}</div>
-          </div>
-        </div>
-
-        {% capture dev %}{% include subsection.html body=content h2="Reflection" h3="How I could develop this lesson further" %}{% endcapture %}
-        {% if dev != "" %}
-          <div class="divider-label">Develop further with</div>
-          <div class="dev-grid">
-            <div class="dev-item">
-              <h5>🌿 Differentiation</h5>
-              <div class="prose">{{ dev | split: "<strong>Differentiation:</strong>" | last | split: "<strong>" | first }}</div>
-            </div>
-            <div class="dev-item">
-              <h5>💻 Technology</h5>
-              <div class="prose">{{ dev | split: "<strong>Technology:</strong>" | last | split: "<strong>" | first }}</div>
-            </div>
-            <div class="dev-item">
-              <h5>📝 Assessment</h5>
-              <div class="prose">{{ dev | split: "<strong>Assessment:</strong>" | last | split: "<strong>" | first }}</div>
-            </div>
-          </div>
-        {% endif %}
+      <div class="card-head"><div class="ci ci-blue">🔍</div><h2>Lesson Reflection</h2></div>
+      <div class="card-body prose">
+        {{ p.reflection | markdownify }}
       </div>
     </div>
 
